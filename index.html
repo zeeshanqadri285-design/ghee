@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Pure Dairy bringing authentic, hand-churned Cow Desi Ghee and Fresh Farm Butter. Made via the traditional bilona method for maximum nutrition and rich taste.">
+    <meta name="keywords"
+        content="Desi Ghee, Cow Butter, Bilona Method, Pure Dairy, Organic Ghee, Fresh Farm Butter, Pakistan">
+    <title>Pure Cow Desi Ghee & Fresh Farm Butter | PureDairy</title>
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Urdu Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Top Discount Banner -->
+    <div class="top-banner">
+        <marquee behavior="scroll" direction="left" scrollamount="6">
+            <span class="banner-text">10% Discount on Advance Payment</span>
+            <span class="banner-separator">|</span>
+            <span class="banner-text urdu-text" dir="rtl">ایڈوانس پیمنٹ پر 10 فیصد ڈسکاؤنٹ</span>
+            <span class="banner-separator">|</span>
+            <span class="banner-text">10% Discount on Advance Payment</span>
+            <span class="banner-separator">|</span>
+            <span class="banner-text urdu-text" dir="rtl">ایڈوانس پیمنٹ پر 10 فیصد ڈسکاؤنٹ</span>
+        </marquee>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="glass-nav">
+        <div class="container nav-content">
+            <div class="logo">
+                <span class="logo-accent">Pure</span>Dairy
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#products">Products</a></li>
+                    <li><a href="index.html#testimonials">Reviews</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="index.html#quality">Quality</a></li>
+                    <li><a href="#contact" class="btn-primary-small">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-icon" id="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-slider">
+            <div class="slide" style="background-image: url('assets/hero_bg.png');"></div>
+            <div class="slide" style="background-image: url('assets/ghee.png');"></div>
+            <div class="slide" style="background-image: url('assets/butter.png');"></div>
+            <div class="slide" style="background-image: url('assets/bilona_method.png');"></div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="container hero-container">
+            <div class="hero-content glass-card slide-up-anim">
+                <span class="badge">100% Organic & Pure</span>
+                <h1>Experience The True Taste of <span class="highlight">Tradition</span></h1>
+                <p>Authentic, hand-churned Cow Desi Ghee and fresh farm Butter. Made from the purest milk of grass-fed
+                    cows, crafted to bring health and flavor to your family's table.</p>
+                <div class="hero-buttons">
+                    <a href="#products" class="btn-primary">Shop Now <i class="fas fa-arrow-right"></i></a>
+                    <a href="#quality" class="btn-secondary">Our Process</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <div class="container">
+            <div class="section-title fade-in-anim">
+                <h2>Our Premium Products</h2>
+                <div class="title-underline"></div>
+                <p>Indulge in our carefully crafted dairy treasures, rich in taste and essential nutrients.</p>
+            </div>
+
+            <div class="products-grid">
+                <!-- Product 1: Desi Ghee -->
+                <div class="product-card fade-in-anim">
+                    <div class="product-image">
+                        <img src="assets/ghee.png" alt="Pure Cow Desi Ghee" loading="lazy">
+                        <div class="discount-badge">SAVE Rs 300</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Pure Cow Desi Ghee</h3>
+                        <p class="product-desc">Authentic bilona churned ghee, rich in aroma and taste, perfect for
+                            everyday wellness.</p>
+                        <div class="price-container">
+                            <span class="old-price">Rs 3,200</span>
+                            <span class="new-price">Rs 2,900</span>
+                        </div>
+                        <button class="btn-buy" onclick="orderViaWhatsApp('Pure Cow Desi Ghee', 2900)">
+                            <i class="fab fa-whatsapp"></i> Buy via WhatsApp
+                        </button>
+                        <button class="btn-buy" onclick="payWithSafepay('Pure Cow Desi Ghee', 2900)"
+                            style="margin-top: 10px; background-color: #2eacfc; color: white;">
+                            <i class="fas fa-credit-card"></i> Pay with Safepay
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 2: Cow Butter -->
+                <div class="product-card fade-in-anim delay-1">
+                    <div class="product-image">
+                        <img src="assets/butter.png" alt="Fresh Cow Butter" loading="lazy">
+                        <div class="discount-badge">FRESH BATCH</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Fresh Farm Cow Butter</h3>
+                        <p class="product-desc">Creamy, rich, and unsalted cow butter made from the freshest morning
+                            cream.</p>
+                        <div class="price-container">
+                            <span class="old-price">Rs 2,889</span>
+                            <span class="new-price">Rs 2,600</span>
+                        </div>
+                        <button class="btn-buy" onclick="orderViaWhatsApp('Fresh Farm Cow Butter', 2600)">
+                            <i class="fab fa-whatsapp"></i> Buy via WhatsApp
+                        </button>
+                        <button class="btn-buy" onclick="payWithSafepay('Fresh Farm Cow Butter', 2600)"
+                            style="margin-top: 10px; background-color: #2eacfc; color: white;">
+                            <i class="fas fa-credit-card"></i> Pay with Safepay
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section id="video-process" class="video-section">
+        <div class="container">
+            <div class="section-title fade-in-anim">
+                <h2>How It's Made: The Bilona Method</h2>
+                <div class="title-underline"></div>
+                <p>Watch the beautiful traditional process of churning fresh, golden Desi Ghee.</p>
+            </div>
+            <div class="video-container fade-in-anim delay-1">
+                <div class="video-wrapper">
+                    <!-- Placeholder YouTube video (you can change the src URL to your actual video later) -->
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0"
+                        title="Desi Ghee Bilona Method" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <div class="section-title fade-in-anim">
+                <h2>What Our Customers Say</h2>
+                <div class="title-underline"></div>
+                <p>Read the stories of health and taste from our happy customers.</p>
+            </div>
+
+            <div class="testimonials-slider-container">
+                <div class="testimonials-track" id="testimonialsTrack">
+                    <!-- Slide 1 -->
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                            <p class="review-text">"The purity and aroma of this Desi Ghee remind me of what my
+                                grandmother used to make. Absolutely authentic and worth every penny!"</p>
+                            <div class="customer-info">
+                                <img src="assets/avatar_woman_1_1772608362262.png" alt="Sara Ahmed"
+                                    class="customer-avatar">
+                                <div class="customer-details">
+                                    <h4>Sara Ahmed</h4>
+                                    <span>Verified Buyer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                            <p class="review-text">"The fresh cow butter is simply incredible. We use it for our daily
+                                breakfast, and the taste is unparalleled. Highly recommended."</p>
+                            <div class="customer-info">
+                                <img src="assets/avatar_man_1_1772608340965.png" alt="Usman Khan"
+                                    class="customer-avatar">
+                                <div class="customer-details">
+                                    <h4>Usman Khan</h4>
+                                    <span>Verified Buyer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star-half-alt"></i></div>
+                            <p class="review-text">"Premium packaging and wonderful taste. It sits perfectly in our
+                                kitchen and has improved our overall wellbeing immensely."</p>
+                            <div class="customer-info">
+                                <img src="assets/avatar_woman_2_1772608395183.png" alt="Fatima Raza"
+                                    class="customer-avatar">
+                                <div class="customer-details">
+                                    <h4>Fatima Raza</h4>
+                                    <span>Verified Buyer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 4 -->
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                            <p class="review-text">"Amazing quality! The desi ghee brings a very rich flavor to our
+                                traditional curries. Can't stop ordering from here."</p>
+                            <div class="customer-info">
+                                <img src="assets/avatar_man_2_1772608378562.png" alt="Ali Tariq"
+                                    class="customer-avatar">
+                                <div class="customer-details">
+                                    <h4>Ali Tariq</h4>
+                                    <span>Verified Buyer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 5 -->
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                            <p class="review-text">"I have tried many brands, but this Farm Fresh Butter is by far the
+                                purest. It has a very homely taste. Best purchase!"</p>
+                            <div class="customer-info">
+                                <img src="assets/avatar_man_3_1772608441558.png" alt="Hamza Bilal"
+                                    class="customer-avatar">
+                                <div class="customer-details">
+                                    <h4>Hamza Bilal</h4>
+                                    <span>Verified Buyer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quality Section -->
+    <section id="quality" class="quality-section">
+        <div class="container box-layout">
+            <div class="quality-text fade-in-anim">
+                <h2>Why Choose Our Dairy?</h2>
+                <p>We believe in quality over quantity. Our process is deeply rooted in traditional methods to ensure
+                    that every jar of ghee and block of butter retains its maximum nutritional value and authentic
+                    flavor.</p>
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> 100% Pure & Organic</li>
+                    <li><i class="fas fa-check-circle"></i> Grass-fed, happy cows</li>
+                    <li><i class="fas fa-check-circle"></i> No preservatives or additives</li>
+                    <li><i class="fas fa-check-circle"></i> Hand-churned using the traditional bilona method</li>
+                </ul>
+            </div>
+            <div class="quality-image fade-in-anim delay-1">
+                <!-- Creating a visual composition with CSS styling -->
+                <div class="aesthetic-box">
+                    <div class="blob-shape"></div>
+                    <div class="glass-overlay">
+                        <h3>Premium Quality</h3>
+                        <p>Farm to Table</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <h3><span class="logo-accent">Pure</span>Dairy</h3>
+                <p>Bringing you the purest dairy products directly from the farm to your doorstep.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#products">Shop</a></li>
+                    <li><a href="index.html#testimonials">Reviews</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="index.html#quality">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-envelope"></i> admin@puredairy.com</p>
+                <p><i class="fab fa-whatsapp"></i> +92 343 7596970</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 PureDairy. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="#" class="floating-wa floating-anim" onclick="openGeneralWhatsApp()">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Safepay SDK -->
+    <script src="https://cdn.getsafepay.com/checkout.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="script.js"></script>
+</body>
+
+</html>
