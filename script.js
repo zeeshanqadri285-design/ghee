@@ -1,37 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Custom Cursor (Optimized)
-    const cursor = document.createElement('div');
-    cursor.classList.add('custom-cursor');
-    document.body.appendChild(cursor);
 
-    let mouseX = -100;
-    let mouseY = -100;
-    let cursorActive = false;
 
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        if (!cursorActive) {
-            cursorActive = true;
-            requestAnimationFrame(updateCursor);
-        }
-    }, { passive: true });
-
-    const updateCursor = () => {
-        // Using transform3d for hardware acceleration instead of top/left layout thrashing
-        cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-        if (cursor.classList.contains('hovering')) {
-            cursor.style.transform += ' scale(1.5)';
-        }
-        if (cursorActive) requestAnimationFrame(updateCursor);
-    };
-
-    // Hover effect on clickable elements
-    const clickables = document.querySelectorAll('a, button, .product-card');
-    clickables.forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-    });
 
     // Reveal Elements on Scroll (Optimized with IntersectionObserver)
     const reveals = document.querySelectorAll('.fade-in-anim, .section-title, .product-card');
@@ -53,21 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reveals.forEach(el => el.classList.add('active'));
     }
 
-    // Magnetic Buttons
-    const magneticButtons = document.querySelectorAll('.btn-primary, .btn-secondary, .btn-buy, .btn-primary-small');
-    magneticButtons.forEach(btn => {
-        btn.addEventListener('mousemove', function (e) {
-            const position = btn.getBoundingClientRect();
-            const x = e.pageX - position.left - position.width / 2;
-            const y = e.pageY - position.top - position.height / 2;
 
-            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.5}px)`;
-        });
-
-        btn.addEventListener('mouseout', function () {
-            btn.style.transform = 'translate(0px, 0px)';
-        });
-    });
 
     // Navigation Scroll Effect (Optimized via requestAnimationFrame debounce)
     const header = document.querySelector('header');

@@ -40,27 +40,10 @@
     background: var(--primary-hover);
 }
 
-/* Custom Cursor */
-.custom-cursor {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--primary-color);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-    will-change: transform;
-}
 
-.custom-cursor.hovering {
-    background-color: rgba(212, 175, 55, 0.2);
-}
 
 html {
     scroll-behavior: smooth;
-    cursor: none;
-    /* Hide default cursor */
 }
 
 body {
