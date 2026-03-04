@@ -1,13 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Custom Cursor
+    // Custom Cursor (Optimized)
     const cursor = document.createElement('div');
     cursor.classList.add('custom-cursor');
     document.body.appendChild(cursor);
 
+    let mouseX = -100;
+    let mouseY = -100;
+    let cursorActive = false;
+
     document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-    });
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (!cursorActive) {
+            cursorActive = true;
+            requestAnimationFrame(updateCursor);
+        }
+    }, { passive: true });
+
+    const updateCursor = () => {
+        // Using transform3d for hardware acceleration instead of top/left layout thrashing
+        cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+        if (cursor.classList.contains('hovering')) {
+            cursor.style.transform += ' scale(1.5)';
+        }
+        if (cursorActive) requestAnimationFrame(updateCursor);
+    };
 
     // Hover effect on clickable elements
     const clickables = document.querySelectorAll('a, button, .product-card');
@@ -16,23 +33,25 @@ document.addEventListener('DOMContentLoaded', () => {
         el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
     });
 
-    // Reveal Elements on Scroll
+    // Reveal Elements on Scroll (Optimized with IntersectionObserver)
     const reveals = document.querySelectorAll('.fade-in-anim, .section-title, .product-card');
-    reveals.forEach(el => el.classList.add('reveal')); // Add reveal class
+    reveals.forEach(el => el.classList.add('reveal'));
 
-    const revealOnScroll = () => {
-        const windowHeight = window.innerHeight;
-        const elementVisible = 150;
+    if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Stop observing once revealed
+                }
+            });
+        }, { rootMargin: "0px 0px -100px 0px" });
 
-        document.querySelectorAll('.reveal').forEach((el) => {
-            const elementTop = el.getBoundingClientRect().top;
-            if (elementTop < windowHeight - elementVisible) {
-                el.classList.add('active');
-            }
-        });
-    };
-    window.addEventListener('scroll', revealOnScroll);
-    revealOnScroll(); // Trigger instantly on load
+        reveals.forEach(el => revealObserver.observe(el));
+    } else {
+        // Fallback for older browsers
+        reveals.forEach(el => el.classList.add('active'));
+    }
 
     // Magnetic Buttons
     const magneticButtons = document.querySelectorAll('.btn-primary, .btn-secondary, .btn-buy, .btn-primary-small');
@@ -50,16 +69,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Navigation Scroll Effect
+    // Navigation Scroll Effect (Optimized via requestAnimationFrame debounce)
     const header = document.querySelector('header');
+    let isScrolling = false;
 
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
+        if (!isScrolling) {
+            window.requestAnimationFrame(() => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                isScrolling = false;
+            });
+            isScrolling = true;
         }
-    });
+    }, { passive: true });
 
     // Mobile Menu Toggle
     const mobileMenu = document.getElementById('mobile-menu');

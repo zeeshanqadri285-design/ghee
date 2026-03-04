@@ -49,13 +49,11 @@
     position: fixed;
     pointer-events: none;
     z-index: 9999;
-    transition: transform 0.1s;
-    transform: translate(-50%, -50%);
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    will-change: transform;
 }
 
 .custom-cursor.hovering {
-    transform: translate(-50%, -50%) scale(1.5);
     background-color: rgba(212, 175, 55, 0.2);
 }
 
