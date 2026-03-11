@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/chatbot-widget/api/$1" }
+  ]
+}
