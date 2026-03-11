@@ -30,36 +30,38 @@ Once you have ALL 5 pieces of information, reply EXACTLY with this format:
 For example: "ORDER_COMPLETE: Cow Desi Ghee | 1 kg | Ali | Lahore | 03001234567"
 Do not add any other words to the final message.`;
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
+function setCors(res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+}
 
 module.exports = async function handler(req, res) {
+  setCors(res);
+
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    res.status(204).set(corsHeaders).send();
+    res.status(204).end();
     return;
   }
 
   // Only allow POST
   if (req.method !== 'POST') {
-    res.status(405).set(corsHeaders).json({ error: "Method not allowed" });
+    res.status(405).json({ error: "Method not allowed" });
     return;
   }
 
   try {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return res.status(500).set(corsHeaders).json({ error: "GEMINI_API_KEY is not configured on the server." });
+      return res.status(500).json({ error: "GEMINI_API_KEY is not configured on the server." });
     }
 
     const ai = new GoogleGenAI({ apiKey });
     const { message, history } = req.body;
 
     if (!message) {
-      return res.status(400).set(corsHeaders).json({ error: "Message is required" });
+      return res.status(400).json({ error: "Message is required" });
     }
 
     const response = await ai.models.generateContent({
@@ -74,9 +76,9 @@ module.exports = async function handler(req, res) {
 
     const responseText = response.text || "Sorry, I couldn't formulate a response.";
 
-    res.status(200).set(corsHeaders).json({ response: responseText });
+    res.status(200).json({ response: responseText });
   } catch (error) {
     console.error("Gemini API Error:", error);
-    res.status(500).set(corsHeaders).json({ error: "Failed to process chat request." });
+    res.status(500).json({ error: "Failed to process chat request.", detail: error.message });
   }
 };
