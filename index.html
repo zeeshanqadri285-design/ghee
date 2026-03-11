@@ -323,10 +323,251 @@
         </div>
     </footer>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="#" class="floating-wa floating-anim" onclick="openGeneralWhatsApp()">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+    <!-- AI Voice Sales Chatbot Widget -->
+    <div id="pd-chat-widget">
+      <!-- Chat Toggle Button -->
+      <button id="pd-chat-btn" onclick="pdToggleChat()" title="Chat with us">
+        <svg id="pd-chat-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <svg id="pd-close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      
+      <!-- Chat Window -->
+      <div id="pd-chat-window">
+        <div id="pd-chat-header">
+          <div id="pd-chat-header-info">
+            <div id="pd-chat-avatar">🧈</div>
+            <div>
+              <strong>PureDairy Assistant</strong>
+              <span id="pd-chat-status">● Online</span>
+            </div>
+          </div>
+        </div>
+        <div id="pd-messages"></div>
+        <div id="pd-chat-input-area">
+          <button id="pd-mic-btn" onclick="pdToggleMic()" title="Voice input">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+          </button>
+          <input id="pd-chat-input" type="text" placeholder="Type a message..." onkeydown="if(event.key==='Enter') pdSendMessage()" />
+          <button id="pd-send-btn" onclick="pdSendMessage()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      /* PureDairy Chatbot Widget */
+      #pd-chat-widget { position: fixed; bottom: 24px; right: 24px; z-index: 99999; font-family: 'Outfit', sans-serif; }
+      #pd-chat-btn { width: 62px; height: 62px; border-radius: 50%; background: linear-gradient(135deg, #16a34a, #15803d); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(22,163,74,0.45); transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); position: relative; z-index: 10; }
+      #pd-chat-btn:hover { transform: scale(1.1); box-shadow: 0 12px 30px rgba(22,163,74,0.55); }
+      #pd-chat-btn svg { width: 28px; height: 28px; color: white; position: absolute; transition: all 0.3s ease; }
+      #pd-close-icon { opacity: 0; transform: rotate(-90deg); }
+      #pd-chat-widget.open #pd-chat-icon { opacity: 0; transform: rotate(90deg); }
+      #pd-chat-widget.open #pd-close-icon { opacity: 1; transform: rotate(0deg); }
+      #pd-chat-window { position: absolute; bottom: 80px; right: 0; width: 360px; max-height: 520px; background: #fff; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.18); display: flex; flex-direction: column; overflow: hidden; transform: scale(0.85) translateY(20px); transform-origin: bottom right; opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); border: 1px solid rgba(0,0,0,0.08); }
+      #pd-chat-widget.open #pd-chat-window { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+      #pd-chat-header { background: linear-gradient(135deg, #16a34a, #15803d); color: white; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
+      #pd-chat-header-info { display: flex; align-items: center; gap: 12px; }
+      #pd-chat-avatar { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+      #pd-chat-header strong { display: block; font-size: 0.95rem; }
+      #pd-chat-status { font-size: 0.75rem; opacity: 0.85; color: #bbf7d0; }
+      #pd-messages { flex: 1; overflow-y: auto; padding: 16px; background: #f8faf8; display: flex; flex-direction: column; gap: 10px; }
+      #pd-messages::-webkit-scrollbar { width: 4px; } #pd-messages::-webkit-scrollbar-thumb { background: #d1fae5; border-radius: 4px; }
+      .pd-bubble { max-width: 80%; padding: 11px 15px; border-radius: 18px; font-size: 0.9rem; line-height: 1.5; animation: pdSlideIn 0.2s ease; }
+      @keyframes pdSlideIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+      .pd-bubble.ai { background: white; color: #1a1a1a; border-radius: 18px 18px 18px 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border: 1px solid #e5e7eb; align-self: flex-start; }
+      .pd-bubble.user { background: linear-gradient(135deg, #16a34a, #15803d); color: white; border-radius: 18px 18px 4px 18px; align-self: flex-end; }
+      .pd-typing { display: flex; gap: 4px; align-items: center; padding: 14px 18px; }
+      .pd-typing span { width: 7px; height: 7px; background: #9ca3af; border-radius: 50%; animation: pdBounce 1.2s infinite; }
+      .pd-typing span:nth-child(2) { animation-delay: 0.2s; } .pd-typing span:nth-child(3) { animation-delay: 0.4s; }
+      @keyframes pdBounce { 0%,60%,100% { transform:translateY(0); } 30% { transform:translateY(-6px); } }
+      .pd-order-card { background: white; border: 1.5px solid #bbf7d0; border-radius: 14px; padding: 14px; font-size: 0.85rem; max-width: 85%; align-self: flex-start; animation: pdSlideIn 0.2s ease; }
+      .pd-order-card h4 { color: #15803d; font-weight: 700; margin-bottom: 8px; font-size: 0.95rem; }
+      .pd-order-card p { margin: 3px 0; color: #374151; }
+      .pd-order-card .pd-wa-btn { display: block; margin-top: 12px; background: #25D366; color: white; text-align: center; padding: 10px; border-radius: 10px; font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: background 0.2s; }
+      .pd-order-card .pd-wa-btn:hover { background: #1ebe5d; }
+      #pd-chat-input-area { padding: 12px; border-top: 1px solid #f0f0f0; display: flex; gap: 8px; align-items: center; background: white; }
+      #pd-chat-input { flex: 1; border: 1.5px solid #e5e7eb; border-radius: 25px; padding: 10px 16px; font-size: 0.9rem; outline: none; font-family: inherit; transition: border-color 0.2s; }
+      #pd-chat-input:focus { border-color: #16a34a; }
+      #pd-mic-btn, #pd-send-btn { width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+      #pd-mic-btn { background: #f3f4f6; color: #6b7280; }
+      #pd-mic-btn:hover { background: #dcfce7; color: #16a34a; }
+      #pd-mic-btn.listening { background: #fee2e2; color: #ef4444; animation: pdPulse 1s infinite; }
+      @keyframes pdPulse { 0%,100% { box-shadow:0 0 0 0 rgba(239,68,68,0.4); } 50% { box-shadow:0 0 0 8px rgba(239,68,68,0); } }
+      #pd-send-btn { background: linear-gradient(135deg, #16a34a, #15803d); color: white; }
+      #pd-send-btn:hover { transform: scale(1.08); }
+      @media (max-width: 420px) { #pd-chat-window { width: calc(100vw - 32px); right: -12px; } }
+    </style>
+
+    <script>
+    (function(){
+      const GEMINI_API_KEY = 'AIzaSyBiQFcnvfKzhWyu6u6p6w7WKcJtDSG9RKM'; // Live API key
+      const NEXT_API = 'https://ghee-zv7o.vercel.app/api/chat'; // Vercel production URL
+
+      const SYSTEM_PROMPT = `You are a friendly AI Sales Assistant for PureDairy, a premium Pakistani dairy brand.
+
+Products:
+1. Cow Desi Ghee - 2500 PKR/kg, 100% pure, free home delivery
+2. Fresh Butter - 2200 PKR/kg, made from fresh milk, free home delivery
+
+Rules:
+- Keep responses short and conversational (1-3 sentences max). No markdown.
+- Be warm, encouraging and persuasive to help customers order.
+- If a customer wants to order, collect: Product Name, Quantity, Customer Name, City, Phone Number.
+- Once you have ALL 5, reply EXACTLY: ORDER_COMPLETE: [Product] | [Qty] | [Name] | [City] | [Phone]`;
+
+      let history = [];
+      let recognition = null;
+      let isListening = false;
+      let isOpen = false;
+
+      // Init speech recognition
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SR) {
+        recognition = new SR();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        recognition.onresult = function(e) {
+          const t = Array.from(e.results).map(r=>r[0].transcript).join('');
+          document.getElementById('pd-chat-input').value = t;
+        };
+        recognition.onend = function() {
+          isListening = false;
+          document.getElementById('pd-mic-btn').classList.remove('listening');
+        };
+        recognition.onerror = function() {
+          isListening = false;
+          document.getElementById('pd-mic-btn').classList.remove('listening');
+        };
+      }
+
+      window.pdToggleChat = function() {
+        isOpen = !isOpen;
+        document.getElementById('pd-chat-widget').classList.toggle('open', isOpen);
+        if (isOpen && document.getElementById('pd-messages').children.length === 0) {
+          pdAddBubble('ai', "👋 Welcome to PureDairy! I'm here to help you order our pure Cow Desi Ghee (Rs 2500/kg) or Fresh Butter (Rs 2200/kg). How can I assist you?");
+        }
+      };
+
+      window.pdToggleMic = function() {
+        if (!recognition) { alert('Voice input not supported in this browser.'); return; }
+        if (isListening) {
+          recognition.stop();
+        } else {
+          recognition.start();
+          isListening = true;
+          document.getElementById('pd-mic-btn').classList.add('listening');
+        }
+      };
+
+      window.pdSendMessage = async function() {
+        const input = document.getElementById('pd-chat-input');
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = '';
+        pdAddBubble('user', text);
+        pdShowTyping();
+
+        try {
+          // Build history for Gemini
+          const geminiHistory = history.map(m => ({
+            role: m.role === 'ai' ? 'model' : 'user',
+            parts: [{ text: m.text }]
+          }));
+
+          let responseText = '';
+
+          // Call Next.js backend (handles Gemini API properly)
+          const res = await fetch(NEXT_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text, history: geminiHistory })
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            responseText = data.response || 'Sorry, I could not respond.';
+          } else {
+            const errData = await res.json().catch(() => ({}));
+            console.error("Backend error:", errData);
+            responseText = '⚠️ Server error. Please make sure the chatbot server is running.';
+          }
+
+          pdRemoveTyping();
+          history.push({ role: 'user', text });
+
+          if (responseText.startsWith('ORDER_COMPLETE:')) {
+            const parts = responseText.replace('ORDER_COMPLETE:', '').split('|').map(p=>p.trim());
+            if (parts.length >= 5) {
+              history.push({ role: 'ai', text: responseText });
+              pdShowOrderCard(...parts);
+              return;
+            }
+          }
+
+          history.push({ role: 'ai', text: responseText });
+          pdAddBubble('ai', responseText);
+          pdSpeak(responseText);
+        } catch (err) {
+          pdRemoveTyping();
+          pdAddBubble('ai', 'Sorry, something went wrong. Please try again.');
+          console.error("Chat Error:", err);
+        }
+      };
+
+      function pdAddBubble(role, text) {
+        const msgs = document.getElementById('pd-messages');
+        const div = document.createElement('div');
+        div.className = 'pd-bubble ' + role;
+        div.textContent = text;
+        msgs.appendChild(div);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function pdShowTyping() {
+        const msgs = document.getElementById('pd-messages');
+        const d = document.createElement('div');
+        d.className = 'pd-bubble ai pd-typing';
+        d.id = 'pd-typing';
+        d.innerHTML = '<span></span><span></span><span></span>';
+        msgs.appendChild(d);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function pdRemoveTyping() {
+        const t = document.getElementById('pd-typing');
+        if (t) t.remove();
+      }
+
+      function pdShowOrderCard(product, qty, name, city, phone) {
+        const msgs = document.getElementById('pd-messages');
+        const waText = encodeURIComponent(`Hi! I'd like to place an order.\n\n*Product:* ${product}\n*Quantity:* ${qty}\n*Name:* ${name}\n*City:* ${city}\n*Phone:* ${phone}`);
+        const card = document.createElement('div');
+        card.className = 'pd-order-card';
+        card.innerHTML = `
+          <h4>🎉 Order Summary</h4>
+          <p><strong>Item:</strong> ${product} (${qty})</p>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>City:</strong> ${city}</p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <a class="pd-wa-btn" href="https://wa.me/923161678092?text=${waText}" target="_blank" rel="noopener">
+            📱 Confirm via WhatsApp
+          </a>`;
+        msgs.appendChild(card);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function pdSpeak(text) {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'en-US';
+          window.speechSynthesis.speak(u);
+        }
+      }
+    })();
+    </script>
 
     <!-- Safepay SDK -->
     <script src="https://cdn.getsafepay.com/checkout.js" defer></script>
